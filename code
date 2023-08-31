@@ -1,0 +1,36 @@
+def main():
+
+    res = "y"
+
+    while res.lower() == "y":
+        try:
+            n = int(input("Enter the number of elements in an array: "))
+            print("")
+            
+            array = [0] * n
+            if n > 1:
+                for i in range(n):
+                    array[i] = int(input("Enter the element {}: ".format(i+1)))
+                    print("")
+                
+                sVal = array[0]
+                lVal = array[0]
+                
+                for i in range(n):
+                    if sVal > array[i]:
+                        sVal = array[i]
+                    if lVal < array[i]:
+                        lVal = array[i]
+                        
+                print("The smallest value is:", sVal, "\n")
+                print("The largest value is:", lVal, "\n")
+                res = input("Do you want to continue? Y/N: ")   
+            else:
+                print("Enter more than 1! \n")
+     
+        except:
+            print("\nInvalid Input! \n")
+        
+    
+if __name__ == "__main__":
+    main()
