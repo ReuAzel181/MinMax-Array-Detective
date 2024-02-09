@@ -1,36 +1,72 @@
-def main():
+import tkinter as tk
 
-    res = "y"
+def create_input_fields():
+    try:
+        count = int(entry_count.get())
+        clear_input_fields()
+        for i in range(count):
+            label = tk.Label(frame_array_values, text="Enter value {}: ".format(i+1))
+            label.grid(row=i, column=0, padx=5, pady=5, sticky="e")
+            entry = tk.Entry(frame_array_values, width=10)
+            entry_array_values.append(entry)
+            entry.grid(row=i, column=1, padx=5, pady=5)
+        button_find.config(state="normal")
+    except ValueError:
+        label_error.config(text="Invalid input! Please enter a valid number.")
 
-    while res.lower() == "y":
-        try:
-            n = int(input("Enter the number of elements in an array: "))
-            print("")
-            
-            array = [0] * n
-            if n > 1:
-                for i in range(n):
-                    array[i] = int(input("Enter the element {}: ".format(i+1)))
-                    print("")
-                
-                sVal = array[0]
-                lVal = array[0]
-                
-                for i in range(n):
-                    if sVal > array[i]:
-                        sVal = array[i]
-                    if lVal < array[i]:
-                        lVal = array[i]
-                        
-                print("The smallest value is:", sVal, "\n")
-                print("The largest value is:", lVal, "\n")
-                res = input("Do you want to continue? Y/N: ")   
-            else:
-                print("Enter more than 1! \n")
-     
-        except:
-            print("\nInvalid Input! \n")
-        
-    
-if __name__ == "__main__":
-    main()
+def clear_input_fields():
+    for entry in entry_array_values:
+        entry.destroy()
+    entry_array_values.clear()
+    button_find.config(state="disabled")
+
+def find_min_max():
+    try:
+        array = [int(entry.get()) for entry in entry_array_values]
+        smallestVal = min(array)
+        largestVal = max(array)
+        label_smallest.config(text="The smallest value is: {}".format(smallestVal))
+        label_largest.config(text="The largest value is: {}".format(largestVal))
+    except ValueError:
+        label_error.config(text="Invalid input! Please enter valid numbers.")
+
+def clear_labels():
+    label_smallest.config(text="")
+    label_largest.config(text="")
+    label_error.config(text="")
+
+root = tk.Tk()
+root.title("Array Min-Max Finder")
+
+frame_input = tk.Frame(root)
+frame_input.pack(padx=10, pady=10)
+
+label_count = tk.Label(frame_input, text="Enter desired number of array:")
+label_count.grid(row=0, column=0, padx=5, pady=5)
+
+entry_count = tk.Entry(frame_input)
+entry_count.grid(row=0, column=1, padx=5, pady=5)
+
+button_create_fields = tk.Button(frame_input, text="Create Input Fields", command=create_input_fields)
+button_create_fields.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
+
+frame_array_values = tk.Frame(root)
+frame_array_values.pack(padx=10, pady=10)
+
+entry_array_values = []
+button_find = tk.Button(root, text="Find Min-Max", command=find_min_max, state="disabled")
+button_find.pack(padx=10, pady=5)
+
+frame_output = tk.Frame(root)
+frame_output.pack(padx=10, pady=10)
+
+label_smallest = tk.Label(frame_output, text="")
+label_smallest.pack()
+
+label_largest = tk.Label(frame_output, text="")
+label_largest.pack()
+
+label_error = tk.Label(frame_output, text="", fg="red")
+label_error.pack()
+
+root.mainloop()
